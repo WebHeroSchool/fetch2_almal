@@ -1,5 +1,4 @@
 let url = window.location.toString();
-
 let getUsername = (url) => {
     let urlArray = url.split('=');
     let userName = urlArray[1];
@@ -8,7 +7,6 @@ let getUsername = (url) => {
     }
     return userName;
 }
-
 let name = getUsername(url);
 
 fetch('https://api.github.com/users/' + name)
@@ -33,5 +31,4 @@ fetch('https://api.github.com/users/' + name)
       gitHubUserAvatar.src = json.avatar_url;
       body.append(gitHubUserAvatar);
       })
-
 .catch(err => alert('Информация не доступна: ' + err));
