@@ -19,9 +19,9 @@ fetch('https://api.github.com/users/' + name)
       gitHubUser.innerHTML = json.login;
       body.append(gitHubUser);
 
-      const gitHubUserName = document.createElement('p');
-      gitHubUserName.innerHTML = name;
-      gitHubUserName.src = json.url;
+      const gitHubUserName = document.createElement('a');
+      gitHubUserName.innerHTML = json.name;
+      gitHubUserName.href = json.html_url;
       body.append(gitHubUserName);
 
       const gitHubUserBio = document.createElement('p');
