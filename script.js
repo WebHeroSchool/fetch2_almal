@@ -15,7 +15,6 @@ let getNowDate = new Promise((resolve, reject) => {
     let nowDate = new Date();
     setTimeout(() => nowDate ? resolve(nowDate) : reject ('Время не определенно'), 3000)
   });
-
 let getUserData = fetch('https://api.github.com/users/' + name);
 
 Promise.all([getUserData, getNowDate])
@@ -53,5 +52,4 @@ Promise.all([getUserData, getNowDate])
       elementDate.innerHTML = currentDate;
       body.appendChild(elementDate);
       })
-
 .catch(err => alert('Информация не доступна: ' + err));
