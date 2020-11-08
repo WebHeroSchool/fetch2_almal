@@ -8,7 +8,6 @@ let getUsername = (url) => {
     }
     return userName;
 }
-
 let name = getUsername(url);
 
 let getNowDate = new Promise((resolve, reject) => {
