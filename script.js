@@ -3,18 +3,18 @@ let url = window.location.toString();
 let getUsername = (url) => {
     let urlArray = url.split('=');
     let userName = urlArray[1];
-    if(isNaN(userName)){
+    if(userName == undefined){
         userName = 'Alenamal';
     }
     return userName;
 }
+
 let name = getUsername(url);
 
 let getNowDate = new Promise((resolve, reject) => {
     let nowDate = new Date();
     setTimeout(() => nowDate ? resolve(nowDate) : reject ('Время не определенно'), 3000)
   });
-
 let getUserData = fetch('https://api.github.com/users/' + name);
 
 Promise.all([getUserData, getNowDate])
@@ -25,32 +25,57 @@ Promise.all([getUserData, getNowDate])
 
     .then(result => userData.json())
     .then(userInfo => {
-      const body = document.body;
-
+      let body = document.body;
+      let avatar = userInfo.avatar_url;
+      let name = userInfo.login;
+      let bio = userInfo.bio;
+      let login = userInfo.html_url;
       let elementForPreloader = document.getElementById('loader');
       elementForPreloader.className = 'active';
+      if (name) {
+        let createLogin = () => {
+          let elementName = document.createElement('h2');
+          elementName.innerText = name;
+          elementName.className='active_login';
+          document.body.append(elementName);
+        };
 
-      const gitHubUser = document.createElement('h2');
-      gitHubUser.innerHTML = userInfo.login;
-      gitHubUser.className='active_login';
-      body.append(gitHubUser);
+        let createName = () => {
+          let elementLink = document.createElement('a');
+          elementLink.innerHTML = userInfo.name;
+          elementLink.href = login;
+          document.body.append(elementLink);
+        };
 
-      const gitHubUserName = document.createElement('a');
-      gitHubUserName.innerHTML = userInfo.name;
-      gitHubUserName.href = userInfo.html_url;
-      body.append(gitHubUserName);
+        let createAvatar = () => {
+          let elementAvatar = document.createElement('img');
+          elementAvatar.src = avatar;
+          document.body.append(elementAvatar);
+        };
 
-      const gitHubUserBio = document.createElement('p');
-      gitHubUserBio.innerHTML = userInfo.bio;
-      body.append(gitHubUserBio);
+        let createBio = () => {
+          let elementBio = document.createElement('p');
+          elementBio.innerHTML = bio;
+          document.body.append(elementBio);
+        }
 
-      const gitHubUserAvatar = document.createElement('img');
-      gitHubUserAvatar.src = userInfo.avatar_url;
-      body.append(gitHubUserAvatar);
+        let elementDate = document.createElement('p');
+        elementDate.innerHTML = currentDate;
+        document.body.append(elementDate);
 
-      const elementDate = document.createElement('p');
-      elementDate.innerHTML = currentDate;
-      body.appendChild(elementDate);
-      })
+        createLogin();
+        createName();
+        createBio();
+        createAvatar();
+      }
+      else {
+        let createError = () => {
+          let elementError = document.createElement('h1');
+          elementError.innerText = ' Информация о пользователе не найдена ';
+          document.body.append(elementError);
+      }
+      elementError();
+    }
+})
 
 .catch(err => alert('Информация не доступна: ' + err));
